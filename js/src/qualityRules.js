@@ -4,18 +4,21 @@ class QualityRule {
 		this.rule = incrementRule;
 	}
 
-	getUpdatedQuality(item) {
-		let qualityChange = this.rule(item);
+	getQualityChange(item, currentIncrement) {
+		return this.rule(item, currentIncrement);
+	}
+
+	static applyQualityChange(item, qualityChange) {
 		if (item.sellIn < 0) {
-			qualityChange *= 2; // decay twice as fast if out of date
+			qualityChange *= 2;
 		}
-		return QualityRule.getQualityInRange(item.quality + qualityChange);
+		item.quality = QualityRule.getQualityInRange(item.quality + qualityChange);
 	}
 
 	static getQualityInRange(quality) { return quality > 50 ? 50 : (quality < 0 ? 0 : quality) }
 }
 
-const backstagePassRule = item => {
+const backstagePassRule = (item, currentIncrement) => {
 	if (item.sellIn === 0) {
 		return -1*item.quality;
 	}
@@ -25,10 +28,8 @@ const backstagePassRule = item => {
 };
 
 const qualityRules = [
-	new QualityRule('Conjured Aged Brie', item => 2),
-	new QualityRule('Aged Brie', item => 1),
-	new QualityRule('Sulfuras, Hand of Ragnaros', item => 0),
+	new QualityRule('Aged Brie', (item, currentIncrement) => currentIncrement*-1),
+	new QualityRule('Sulfuras, Hand of Ragnaros', (item, currentIncrement) => 0),
 	new QualityRule('Backstage passes to', backstagePassRule),
-	new QualityRule('Conjured', item => -2),
-	new QualityRule('', item => -1)        // default rule - all names match
+	new QualityRule('Conjured', (item, currentIncrement) => currentIncrement*2),
 ];

@@ -46,6 +46,13 @@ describe("Gilded Rose", function() {
 	    expect(items[0].quality).toEqual(42);
     });
 
+    it("Conjured Aged Brie gets AMAZING past it's sell-by date", () => {
+	    const gildedRose = new Shop([ new Item("Conjured Aged Brie", 0, 40) ]);
+	    gildedRose.updateQuality();
+	    const items = gildedRose.updateQuality();
+	    expect(items[0].quality).toEqual(46);
+    });
+
     it("The quality of Aged Brie is never more than 50", () => {
         const gildedRose = new Shop([ new Item("Aged Brie", 10, 49) ]);
 
@@ -69,11 +76,11 @@ describe("Gilded Rose", function() {
     });
 
 
-    // it("The quality of an item is never more than 50", () => {
-    //     const gildedRose = new Shop([ new Item("old socks", 10, 60) ]);
-    //     const items = gildedRose.updateQuality();
-    //     expect(items[0].quality).toEqual(49);
-    // });
+    it("The quality of an item is never more than 50", () => {
+        const gildedRose = new Shop([ new Item("old socks", 10, 60) ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).toEqual(49);
+    });
 
     describe("Sulfuras", () => {
         it("Sulfuras never has to be sold", () => {
@@ -115,27 +122,27 @@ describe("Gilded Rose", function() {
             });
         });
 
-        // describe("...to a generic concert", () => {
-        //     it("Backstage passes quality increases by 1 when more than 10 days left to sell", () => {
-        //         const gildedRose = new Shop([ new Item("Backstage passes to", 15, 10) ]);
-        //         const items = gildedRose.updateQuality();
-        //         expect(items[0].quality).toEqual(11);
-        //     });
-        //     it("Backstage passes quality increases by 2 when 10 of fewer days left to sell", () => {
-        //         const gildedRose = new Shop([ new Item("Backstage passes to", 10, 10) ]);
-        //         const items = gildedRose.updateQuality();
-        //         expect(items[0].quality).toEqual(12);
-        //     });
-        //     it("Backstage passes quality increases by 3 when 5 of fewer days left to sell", () => {
-        //         const gildedRose = new Shop([ new Item("Backstage passes to", 5, 10) ]);
-        //         const items = gildedRose.updateQuality();
-        //         expect(items[0].quality).toEqual(13);
-        //     });
-        //     it("Backstage passes quality drops to zero after the concert", () => {
-        //         const gildedRose = new Shop([ new Item("Backstage passes to", 1, 10) ]);
-        //         const items = gildedRose.updateQuality();
-        //         expect(items[0].quality).toEqual(0);
-        //     });
-        // });
+        describe("...to a generic concert", () => {
+            it("Backstage passes quality increases by 1 when more than 10 days left to sell", () => {
+                const gildedRose = new Shop([ new Item("Backstage passes to", 15, 10) ]);
+                const items = gildedRose.updateQuality();
+                expect(items[0].quality).toEqual(11);
+            });
+            it("Backstage passes quality increases by 2 when 10 of fewer days left to sell", () => {
+                const gildedRose = new Shop([ new Item("Backstage passes to", 10, 10) ]);
+                const items = gildedRose.updateQuality();
+                expect(items[0].quality).toEqual(12);
+            });
+            it("Backstage passes quality increases by 3 when 5 of fewer days left to sell", () => {
+                const gildedRose = new Shop([ new Item("Backstage passes to", 5, 10) ]);
+                const items = gildedRose.updateQuality();
+                expect(items[0].quality).toEqual(13);
+            });
+            it("Backstage passes quality drops to zero after the concert", () => {
+                const gildedRose = new Shop([ new Item("Backstage passes to", 0, 10) ]);
+                const items = gildedRose.updateQuality();
+                expect(items[0].quality).toEqual(0);
+            });
+        });
     });
 });
