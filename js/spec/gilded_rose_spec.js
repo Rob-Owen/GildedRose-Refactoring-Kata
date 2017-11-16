@@ -1,9 +1,15 @@
 describe("Gilded Rose", function() {
-    it("Generate Items", function() {
+    it("Generate Item", () => {
         const gildedRose = new Shop([ new Item("foo", 0, 0) ]);
         const items = gildedRose.updateQuality();
         expect(items[0].name).toEqual("foo");
     });
+
+    it("Generate multiple items", () => {
+        const gildedRose = new Shop([new Item("foo", 0, 0),new Item("foo", 0, 0),new Item("foo", 0, 0)]);
+        const items = gildedRose.updateQuality();
+        expect(items.length).toEqual(3);
+    })
 
     it("Quality decays by one each day", () => {
         const gildedRose = new Shop([ new Item("beer", 10, 40) ]);
@@ -34,6 +40,12 @@ describe("Gilded Rose", function() {
         expect(items[0].quality).toEqual(50);
     });
 
+    it("Conjured Aged Brie gets even better with age!", () => {
+	    const gildedRose = new Shop([ new Item("Conjured Aged Brie", 10, 40) ]);
+	    const items = gildedRose.updateQuality();
+	    expect(items[0].quality).toEqual(42);
+    });
+
     it("The quality of Aged Brie is never more than 50", () => {
         const gildedRose = new Shop([ new Item("Aged Brie", 10, 49) ]);
 
@@ -42,6 +54,20 @@ describe("Gilded Rose", function() {
 
         expect(items[0].quality).toEqual(50);
     });
+
+    it("The quality of items decreases twice as fast once sellIn reaches zero", () => {
+	    const gildedRose = new Shop([ new Item("potatoes", 0, 40) ]);
+	    gildedRose.updateQuality();
+	    const items = gildedRose.updateQuality();
+	    expect(items[0].quality).toEqual(37);
+    });
+
+    it("The quality of conjured items decreases twice as fast as normal", () => {
+	    const gildedRose = new Shop([ new Item("Conjured potatoes", 10, 40) ]);
+	    const items = gildedRose.updateQuality();
+	    expect(items[0].quality).toEqual(38);
+    });
+
 
     // it("The quality of an item is never more than 50", () => {
     //     const gildedRose = new Shop([ new Item("old socks", 10, 60) ]);
